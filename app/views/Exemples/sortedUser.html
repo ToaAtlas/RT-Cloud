@@ -1,0 +1,16 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><a href="Exemples/sortedUsers/login/{%if order=='ASC'%}DESC{%else%}ASC{%endif%}" >Login</th>
+    <th><a href="Exemples/sortedUsers/mail/ASC">Mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  {%for user in users%}
+    <tr>
+      <td>{{user.getLogin()}}</td>
+      <td>{{user.getMail()}}</td>
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>

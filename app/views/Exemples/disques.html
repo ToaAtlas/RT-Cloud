@@ -1,0 +1,8 @@
+<!--exemple de vue-->
+<h1>Disques</h1>
+<ul>
+  {%for disque in disks%}
+  <li>{{disque.getNom()}}
+  <div class="badge">{{disque.getUtilisateur()}}</div></li>
+  {%endfor%}
+</ul>
