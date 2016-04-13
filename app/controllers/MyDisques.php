@@ -13,16 +13,17 @@ class MyDisques extends Controller{
 		if (Auth::isAuth()){ //verifie user connecté
 			$user = Auth::getUser(); // get user name		
 			$userId = $user->getId(); // on recup l'id user
-			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");// on recup les disques du user, tableau d'objet
-			$this->loadView("MyDisques\index.html", array("user"=>$user,"disques"=>$disques));
 			
+			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId"); // on recup les disques du user, tableau d'objet
+			$this->loadView("MyDisques\index.html", array("user"=>$user,"disques"=>$disques));
+//			$numDisque = 1;
 //foreach ($disques as $disque){ // on les affiche
 //				echo "disque numéro $numDisque<br>";
 //				echo $disque->getNom()." nom";
 //				echo "<br>";
 //				echo $disque->getOccupation()." occupation";
 //				echo "<br>";
-//				echo $rslt = $disque->getQuota()/ModelUtils::sizeConverter("Ko").'ko quota';
+//				echo $rslt = DirectoryUtils::formatBytes($disque->getQuota(),2).' quota';
 //				echo "<br>";
 //				echo "<br>";
 //				$numDisque++;
