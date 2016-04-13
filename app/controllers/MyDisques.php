@@ -14,19 +14,7 @@ class MyDisques extends Controller{
 			$user = Auth::getUser(); // get user name		
 			$userId = $user->getId(); // on recup l'id user
 			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");// on recup les disques du user, tableau d'objet
-			$this->loadView("MyDisques\index.html", array("user"=>$user,"disques"=>$disques));
-			
-//foreach ($disques as $disque){ // on les affiche
-//				echo "disque numéro $numDisque<br>";
-//				echo $disque->getNom()." nom";
-//				echo "<br>";
-//				echo $disque->getOccupation()." occupation";
-//				echo "<br>";
-//				echo $rslt = $disque->getQuota()/ModelUtils::sizeConverter("Ko").'ko quota';
-//				echo "<br>";
-//				echo "<br>";
-//				$numDisque++;
-//			}
+			$this->loadView("MyDisques/index.html", array("user"=>$user,"disques"=>$disques));
 		}
 		else {
 			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
