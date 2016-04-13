@@ -15,7 +15,7 @@ class MyDisques extends Controller{
 			$userId = $user->getId(); // on recup l'id user
 			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");// on recup les disques du user, tableau d'objet
 			$this->loadView("MyDisques\index.html", array("user"=>$user,"disques"=>$disques));
-			
+			fghjkl
 //foreach ($disques as $disque){ // on les affiche
 //				echo "disque numéro $numDisque<br>";
 //				echo $disque->getNom()." nom";
