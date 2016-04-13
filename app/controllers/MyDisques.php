@@ -11,27 +11,25 @@ class MyDisques extends Controller{
 	public function index() {
 		echo Jquery::compile();
 		if (Auth::isAuth()){ //verifie user connecté
-			$user = Auth::getUser(); // get user name
-			var_dump($user); // c'est un objet
-			echo"<br><br>";
+			$user = Auth::getUser(); // get user name		
 			$userId = $user->getId(); // on recup l'id user
-			$disque = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");
-			var_dump($disque); // on recup les disques du user
-			echo"<br><br>";
-			$numDisque = 1;
-			foreach ($disque as $disque){ // on les affiche
-				echo "disque numéro $numDisque<br>";
-				echo $disque->getSize()." taille";
-				echo "<br>";
-				echo $disque->getOccupation()." occupation";
-				echo "<br>";
-				echo $disque->getQuota().' quota';
-				echo "<br>";
-				$numDisque++;
-			}
+			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");// on recup les disques du user, tableau d'objet
+			$this->loadView("MyDisques\index.html", array("user"=>$user,"disques"=>$disques));
+			
+//foreach ($disques as $disque){ // on les affiche
+//				echo "disque numéro $numDisque<br>";
+//				echo $disque->getNom()." nom";
+//				echo "<br>";
+//				echo $disque->getOccupation()." occupation";
+//				echo "<br>";
+//				echo $rslt = $disque->getQuota()/ModelUtils::sizeConverter("Ko").'ko quota';
+//				echo "<br>";
+//				echo "<br>";
+//				$numDisque++;
+//			}
 		}
 		else {
-			echo "<div class='content'><h4>Veuillez vous connecter</h4></div>";
+			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
 		}
 	}
 

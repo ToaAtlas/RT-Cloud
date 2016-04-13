@@ -1,3 +1,16 @@
-<div class="content">
-  <h2>Mes disques -> {{user}}</h2>
+<div id="content">
+  <h4>Mes disques -> {{user}}</h4>
+  <button class="btn btn-primary"  type="button">
+    <span class="glyphicon glyphicon-plus-sign"></span> Créer un disque
+  </button>
+  <ul class="list-group">
+    {%for disque in disques%}
+    {{if (disque.getQuota() > 1000000){
+      convert = ModelUtils::sizeConverter("Mo")
+    } else {
+      convert = ModelUtils::sizeConverter("Ko")
+      }}}
+      <li class="list-group-item"><span class="glyphicon glyphicon-hdd"></span> <strong>{{disque.getNom()}}</strong> {{disque.getOccupation()/100*(disque.getQuota()/convert)}}</li>
+    {%endfor%}
+  </ul>
 </div>
