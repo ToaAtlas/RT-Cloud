@@ -5,12 +5,7 @@
   </button>
   <ul class="list-group">
     {%for disque in disques%}
-    {{if (disque.getQuota() > 1000000){
-      convert = ModelUtils::sizeConverter("Mo")
-    } else {
-      convert = ModelUtils::sizeConverter("Ko")
-      }}}
-      <li class="list-group-item"><span class="glyphicon glyphicon-hdd"></span> <strong>{{disque.getNom()}}</strong> {{disque.getOccupation()/100*(disque.getQuota()/convert)}}</li>
+      <li class="list-group-item"><span class="glyphicon glyphicon-hdd"></span> <strong>{{disque.getNom()}}</strong> {{disque.getOccupation()/100*(disque.getQuota()/)}}</li>
     {%endfor%}
   </ul>
 </div>
