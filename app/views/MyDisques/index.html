@@ -5,8 +5,10 @@
   </button>
   <ul class="list-group">
     {%for disque in disques%}
-      <li class="list-group-item"><span class="glyphicon glyphicon-hdd"></span> <strong>{{disque.getNom()}}</strong> {{DirectoryUtils.formatBytes(disque.getOccupation()/100*disque.getQuota(),2)}}</li>
+      <li class="list-group-item">
+        <span class="glyphicon glyphicon-hdd"></span><strong>{{disque.getNom()}}</strong>
+        {{DirectoryUtils.formatBytes(disque.getOccupation()/100*disque.getQuota(),2)}}
+      </li>
     {%endfor%}
-
   </ul>
 </div>
