@@ -17,16 +17,24 @@ class Scan extends BaseController {
 	 * @param int $idDisque
 	 */
 	public function show($idDisque) {
-		$diskName="Datas";
-		$this->loadView("scan/vFolder.html");
-		Jquery::executeOn("#ckSelectAll", "click","$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
-		Jquery::executeOn("#btUpload", "click", "$('#tabsMenu a:last').tab('show');");
-		Jquery::doJqueryOn("#btDelete", "click", "#panelConfirmDelete", "show");
-		Jquery::postOn("click", "#btConfirmDelete", "scan/delete","#ajaxResponse",array("params"=>"$('.toDelete:checked').serialize()"));
-		Jquery::doJqueryOn("#btFrmCreateFolder", "click", "#panelCreateFolder", "toggle");
-		Jquery::postFormOn("click", "#btCreateFolder", "Scan/createFolder", "frmCreateFolder","#ajaxResponse");
-		Jquery::execute("window.location.hash='';scan('".$diskName."')",true);
-		echo Jquery::compile();
+		if (Auth::isAuth()) { //verifie user connecté
+			$user = Auth::getUser(); // get user name
+			$userId = $user->getId(); // on recup l'id user
+			$diskName = "Datas"; //TODO Modif dynamique
+
+			$this->loadView("scan/vFolder.html");
+			Jquery::executeOn("#ckSelectAll", "click", "$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
+			Jquery::executeOn("#btUpload", "click", "$('#tabsMenu a:last').tab('show');");
+			Jquery::doJqueryOn("#btDelete", "click", "#panelConfirmDelete", "show");
+			Jquery::postOn("click", "#btConfirmDelete", "scan/delete", "#ajaxResponse", array("params" => "$('.toDelete:checked').serialize()"));
+			Jquery::doJqueryOn("#btFrmCreateFolder", "click", "#panelCreateFolder", "toggle");
+			Jquery::postFormOn("click", "#btCreateFolder", "Scan/createFolder", "frmCreateFolder", "#ajaxResponse");
+			Jquery::execute("window.location.hash='';scan('" . $diskName . "')", true);
+			echo Jquery::compile();
+		}
+		else {
+			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
+		}
 	}
 
 	public function files($dir="Datas"){
@@ -45,7 +53,7 @@ class Scan extends BaseController {
 	}
 
 	public function upload(){
-		$allowed = array('png', 'jpg', 'gif','zip');
+		$allowed = array('png', 'jpg', 'gif', 'zip');
 
 		if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
 
