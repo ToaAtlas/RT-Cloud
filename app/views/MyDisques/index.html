@@ -7,7 +7,13 @@
     {%for disque in disques%}
       <li class="list-group-item">
         <span class="glyphicon glyphicon-hdd"></span><strong>{{disque.getNom()}}</strong>
-        {{disque.occupation}}
+        <span class="label label-default">{{disque.occupation}} / {{disque.occupationTotal}}</span>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{disque.getOccupation()}}" aria-valuemin="0" aria-valuemax="100" style="width: {{disque.getOccupation()}}%; min-width: 3em;">
+            {{disque.getOccupation()}}%
+          </div>
+        </div>
       </li>
     {%endfor%}
   </ul>
