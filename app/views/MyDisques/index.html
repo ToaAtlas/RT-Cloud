@@ -9,11 +9,16 @@
         <span class="glyphicon glyphicon-hdd"></span><strong>{{disque.getNom()}}</strong>
         <span class="label label-default">{{disque.occupation}} / {{disque.occupationTotal}}</span>
 
-        <div class="progress">
+        <div class="progress" style="margin-top: 10px;">
           <div class="progress-bar progress-bar-striped progress-bar-{{disque.progressStyle}} active" role="progressbar" aria-valuenow="{{disque.getOccupation()}}" aria-valuemin="0" aria-valuemax="100" style="width: {{disque.getOccupation()}}%; min-width: 3em;">
             {{disque.getOccupation()}}%
           </div>
         </div>
+
+        <button type="button" class="btn btn-primary btn-block">
+          <span class="glyphicon glyphicon-folder-open" style="margin-right: 5px;"></span>
+          Ouvrir
+        </button>
       </li>
     {%endfor%}
   </ul>

@@ -30,7 +30,7 @@ class MyDisques extends Controller{
 
 				if($occupation <= 50 && $occupation > 10)
 					$disque->progressStyle = 'success';
-				
+
 				if($occupation <= 10 && $occupation > 0)
 					$disque->progressStyle = 'info';
 			}
