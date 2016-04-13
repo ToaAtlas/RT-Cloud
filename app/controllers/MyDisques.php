@@ -19,6 +19,20 @@ class MyDisques extends Controller{
 			foreach($disques as $disque) {
 				$disque->occupation = DirectoryUtils::formatBytes($disque->getOccupation() / 100 * $disque->getQuota());
 				$disque->occupationTotal = DirectoryUtils::formatBytes($disque->getQuota());
+
+				$occupation = $disque->getOccupation();
+
+				if($occupation <= 100 && $occupation > 80)
+					$disque->progressStyle = 'danger';
+
+				if($occupation <= 80 && $occupation > 50)
+					$disque->progressStyle = 'warning';
+
+				if($occupation <= 50 && $occupation > 10)
+					$disque->progressStyle = 'success';
+				
+				if($occupation <= 10 && $occupation > 0)
+					$disque->progressStyle = 'info';
 			}
 
 
