@@ -5,7 +5,9 @@
   </button>
   <ul class="list-group">
     {%for disque in disques%}
-      <li class="list-group-item"><span class="glyphicon glyphicon-hdd"></span> <strong>{{disque.getNom()}}</strong> {{disque.getOccupation()/100*(disque.getQuota()/1)}}</li>
+      <li class="list-group-item">
+        <span class="glyphicon glyphicon-hdd"></span><strong>{{disque.getNom()}}</strong>
+      </li>
     {%endfor%}
   </ul>
 </div>
