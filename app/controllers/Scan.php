@@ -31,17 +31,14 @@ class Scan extends BaseController {
 				$disk->status = 'Proche saturation';
 				$disk->style = 'danger';
 			}
-
 			if($occupation <= 80 && $occupation > 50) {
 				$disk->status = 'Forte occupation';
 				$disk->style = 'warning';
 			}
-
 			if($occupation <= 50 && $occupation > 10) {
 				$disk->status = 'RAS';
 				$disk->style = 'success';
 			}
-
 			if($occupation <= 10 && $occupation > 0) {
 				$disk->status = 'Peu occupé';
 				$disk->style = 'info';

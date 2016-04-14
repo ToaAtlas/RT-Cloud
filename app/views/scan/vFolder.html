@@ -12,14 +12,14 @@
 
 					<ul class="list-group">
 						<li class="list-group-item">
-							Nom: {{diskName}}
+							<strong>Nom</strong>: {{diskName}}
 							<button class="btn btn-default">
 								<span class="glyphicon glyphicon-edit"></span>
 								Modifier
 							</button>
 						</li>
 						<li class="list-group-item">
-							Propriétaire: {{user.getLogin()}}
+							<strong>Propriétaire</strong>: {{user.getLogin()}}
 						</li>
 						<li class="list-group-item">
 							<h4>Occupation</h4>
@@ -28,10 +28,24 @@
 						</li>
 						<li class="list-group-item">
 							<h4>Tarification</h4>
-							<p>Prix: </p>
+							<p>{{disk.getDisqueTarifs()[0].getTarif()}}</p>
+							<button class="btn btn-default">
+								<span class="glyphicon glyphicon-edit"></span>
+								Modifier la tarification...
+							</button>
+						</li>
+						<li class="list-group-item">
+							<h4>Services</h4>
+							<span class="label label-info">Backup</span>
+							<span class="label label-info">LoadBalancer</span>
 						</li>
 					</ul>
 				</div>
+
+				<a href="Disques/index" class="btn btn-primary btn-block">
+					<span class="glyphicon glyphicon-folder-close"></span>
+					Fermer et retourner à <strong>Mes disques</strong>
+				</a>
 				<!--
 				//TODO 4.3 implémenter à partir de DisqueController/indexAction
 				-->
