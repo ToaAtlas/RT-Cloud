@@ -19,7 +19,6 @@ class Scan extends BaseController {
 	public function show($idDisque) {
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser();
-			var_dump($user);
 			$disk = \micro\orm\DAO::getOne("disque", "id = $idDisque");
 			$diskName = $disk->getNom();
 
