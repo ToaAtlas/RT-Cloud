@@ -1,5 +1,7 @@
 <?php
 use micro\js\Jquery;
+use micro\orm\DAO;
+
 /**
  * Contrôleur permettant d'afficher/gérer 1 disque
  * @author jcheron
@@ -19,12 +21,34 @@ class Scan extends BaseController {
 	public function show($idDisque) {
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser();
-			var_dump($user);
-			$disk = \micro\orm\DAO::getOne("disque", "id = $idDisque");
+			$disk = DAO::getOne("disque", "id = $idDisque");
 			$diskName = $disk->getNom();
+			$disk->occupation = DirectoryUtils::formatBytes($disk->getOccupation() / 100 * $disk->getQuota());
+			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
+			$occupation = $disk->getOccupation();
+
+			if($occupation <= 100 && $occupation > 80) {
+				$disk->status = 'Proche saturation';
+				$disk->style = 'danger';
+			}
+
+			if($occupation <= 80 && $occupation > 50) {
+				$disk->status = 'Forte occupation';
+				$disk->style = 'warning';
+			}
+
+			if($occupation <= 50 && $occupation > 10) {
+				$disk->status = 'RAS';
+				$disk->style = 'success';
+			}
+
+			if($occupation <= 10 && $occupation > 0) {
+				$disk->status = 'Peu occupé';
+				$disk->style = 'info';
+			}
 
 
-			$this->loadView("scan/vFolder.html", array('user' => $user, 'diskName' => $diskName));
+			$this->loadView("scan/vFolder.html", array('user' => $user, 'disk' => $disk, 'diskName' => $diskName));
 			Jquery::executeOn("#ckSelectAll", "click", "$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
 			Jquery::executeOn("#btUpload", "click", "$('#tabsMenu a:last').tab('show');");
 			Jquery::doJqueryOn("#btDelete", "click", "#panelConfirmDelete", "show");
