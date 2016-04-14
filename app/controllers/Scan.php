@@ -18,11 +18,13 @@ class Scan extends BaseController {
 	 */
 	public function show($idDisque) {
 		if (Auth::isAuth()) { //verifie user connecté
-			$user = Auth::getUser(); // get user name
-			$userId = $user->getId(); // on recup l'id user
-			$diskName = "Datas"; //TODO Modif dynamique
+			$user = Auth::getUser();
+			var_dump($user);
+			$disk = \micro\orm\DAO::getOne("disque", "id = $idDisque");
+			$diskName = $disk->getNom();
 
-			$this->loadView("scan/vFolder.html");
+
+			$this->loadView("scan/vFolder.html", array('user' => $user, 'diskName' => $diskName));
 			Jquery::executeOn("#ckSelectAll", "click", "$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
 			Jquery::executeOn("#btUpload", "click", "$('#tabsMenu a:last').tab('show');");
 			Jquery::doJqueryOn("#btDelete", "click", "#panelConfirmDelete", "show");
