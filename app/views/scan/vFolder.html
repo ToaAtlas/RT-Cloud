@@ -36,8 +36,9 @@
 						</li>
 						<li class="list-group-item">
 							<h4>Services</h4>
-							<span class="label label-info">Backup</span>
-							<span class="label label-info">LoadBalancer</span>
+							{%for service in disk._services%}
+								<span class="label label-info">{{service.getNom()}}</span>
+							{%endfor%}
 						</li>
 					</ul>
 				</div>
