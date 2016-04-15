@@ -6,4 +6,8 @@ class Disques extends \_DefaultController {
 		$this->title="Disques";
 		$this->model="Disque";
 	}
+
+	public function create() {
+		$this->loadView('Disques/create.html');
+	}
 }

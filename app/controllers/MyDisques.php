@@ -36,7 +36,7 @@ class MyDisques extends Controller{
 			}
 
 
-			$this->loadView("MyDisques/index.html", array("user"=>$user,"disques"=>$disques));
+			$this->loadView("MyDisques/create.html", array("user"=>$user,"disques"=>$disques));
 		}
 		else {
 			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
