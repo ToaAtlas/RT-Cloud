@@ -44,10 +44,11 @@ class Scan extends BaseController {
 				$disk->style = 'info';
 			}
 
-			$services = DAO::getAll('Service', 'idDisque = '. $idDisque);
-			echo '<pre>';
-				var_dump($services);
-			echo '</pre>';
+			//TODO Services
+//			$services = DAO::getAll('Service', 'idDisque = '. $idDisque);
+//			echo '<pre>';
+//				var_dump($services);
+//			echo '</pre>';
 
 
 			$this->loadView("scan/vFolder.html", array('user' => $user, 'disk' => $disk, 'diskName' => $diskName));
