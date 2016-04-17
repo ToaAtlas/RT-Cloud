@@ -46,6 +46,10 @@ class Scan extends BaseController {
 
 			$disk->_services = DAO::getManyToMany($disk, "services");
 
+			echo '<pre>';
+				var_dump($disk->getDisqueTarifs()[0]);
+			echo '</pre>';
+
 
 			$this->loadView("scan/vFolder.html", array('user' => $user, 'disk' => $disk, '', 'diskName' => $diskName));
 			Jquery::executeOn("#ckSelectAll", "click", "$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
