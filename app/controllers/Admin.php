@@ -24,13 +24,13 @@ class Admin extends \BaseController {
 		foreach($users as $user) {
 			$user->countDisk = DAO::count('disque', 'idUtilisateur = '. $user->getId());
 			$user->disks = DAO::getAll('disque', 'idUtilisateur = '. $user->getId());
-			$user
+			$user->diskTarif = 0;
 
-//			foreach($user->disks as $disk) {
-//				echo '<pre>';
-//				var_dump($disk->getDisqueTarifs());
-//				echo '</pre>';
-//			}
+			foreach($user->disks as $disk) {
+				$tarif = ModelUtils::getDisqueTarif($disk);
+				if ($tarif != null)
+					$user->diskTarif += $tarif->getPrix();
+			}
 		}
 
 		$this->loadView('Admin/user.html', ['users' => $users]);

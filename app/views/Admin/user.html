@@ -18,7 +18,11 @@
           <span class="label label-primary">{{user.countDisk}} {% if user.countDisk == 1 %} disque {% else %} disques {% endif %}</span>
         {% endif %}
       </td>
-      <td><span class="label label-info"> €</span></td>
+      <td>
+        {% if user.diskTarif %}
+          <span class="label label-info">{{user.diskTarif}} €</span>
+        {% endif %}
+      </td>
       <td>
         <button class="btn btn-primary pull-right">
           <span class="glyphicon glyphicon-search"></span>
