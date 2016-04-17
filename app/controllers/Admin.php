@@ -18,4 +18,21 @@ class Admin extends \BaseController {
 
 		$this->loadView('Admin/index.html', ['count' => $count]);
 	}
+
+	public function user() {
+		$users = DAO::getAll('utilisateur');
+		foreach($users as $user) {
+			$user->countDisk = DAO::count('disque', 'idUtilisateur = '. $user->getId());
+			$user->disks = DAO::getAll('disque', 'idUtilisateur = '. $user->getId());
+			$user
+
+//			foreach($user->disks as $disk) {
+//				echo '<pre>';
+//				var_dump($disk->getDisqueTarifs());
+//				echo '</pre>';
+//			}
+		}
+
+		$this->loadView('Admin/user.html', ['users' => $users]);
+	}
 }
