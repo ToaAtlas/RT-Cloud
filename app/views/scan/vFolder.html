@@ -36,7 +36,7 @@
 						</li>
 						<li class="list-group-item">
 							<h4>Services</h4>
-							{%for service in disk._services%}
+							{% for service in disk._services %}
 								<span class="label label-info">{{service.getNom()}}</span>
 							{%endfor%}
 						</li>

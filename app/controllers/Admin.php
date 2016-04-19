@@ -35,4 +35,26 @@ class Admin extends \BaseController {
 
 		$this->loadView('Admin/user.html', ['users' => $users]);
 	}
+
+	public function disques() {
+		$users = DAO::getAll('utilisateur');
+
+		foreach($users as $user) {
+			if($user->getAdmin() == 0)
+				$user->status = 'Utilisateur';
+			elseif ($user->getAdmin() == 1)
+				$user->status = 'Administrateur';
+
+			$user->disks = DAO::getAll('disque', 'idUtilisateur = '. $user->getId());
+
+			foreach($user->disks as $disk) {
+				$disk->tarif = ModelUtils::getDisqueTarif($disk);
+			}
+//			echo '<pre>';
+//				var_dump($user->disks);
+//			echo '</pre>';
+		}
+
+		$this->loadView('Admin/disques.html', ['users' => $users]);
+	}
 }
