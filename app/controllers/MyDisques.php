@@ -7,7 +7,7 @@ use micro\orm\DAO;
 class MyDisques extends Controller{
 	public function initialize(){
 		if(!RequestUtils::isAjax()){
-			$this->loadView("main/vHeader.html",array("infoUser"=>Auth::getInfoUser()));
+			$this->loadView('main/vHeader.html',array('infoUser' => Auth::getInfoUser()));
 		}
 	}
 	public function index() {
@@ -15,7 +15,7 @@ class MyDisques extends Controller{
 		if (Auth::isAuth()){ //verifie user connecté
 			$user = Auth::getUser(); // get user name		
 			$userId = $user->getId(); // on recup l'id user
-			$disques = \micro\orm\DAO::getAll("disque", "idUtilisateur=$userId");// on recup les disques du user, tableau d'objet
+			$disques = \micro\orm\DAO::getAll('disque', 'idUtilisateur = '. $userId);// on recup les disques du user, tableau d'objet
 			foreach($disques as $disque) {
 				$disque->occupation = DirectoryUtils::formatBytes($disque->getOccupation() / 100 * $disque->getQuota());
 				$disque->occupationTotal = DirectoryUtils::formatBytes($disque->getQuota());
@@ -36,10 +36,15 @@ class MyDisques extends Controller{
 			}
 
 
-			$this->loadView("MyDisques/index.html", array("user"=>$user,"disques"=>$disques));
+			$this->loadView('MyDisques/index.html', array('user' => $user, 'disques' => $disques));
 		}
 		else {
-			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
+			$msg = new DisplayedMessage();
+			$msg->setContent('Vous devez vous connecter pour avoir accès à cette ressource')
+				->setType('danger')
+				->setDismissable(false)
+				->show($this);
+			echo Auth::getInfoUser();
 		}
 	}
 

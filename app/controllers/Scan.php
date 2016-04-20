@@ -17,11 +17,22 @@ class Scan extends BaseController {
 	/**
 	 * Affiche un disque
 	 * @param int $idDisque
+	 * @return bool
 	 */
 	public function show($idDisque) {
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser();
-			$disk = DAO::getOne("disque", "id = $idDisque");
+
+			$disk = DAO::getOne('disque', 'id ='. $idDisque .'&& idUtilisateur = '. $user->getId());
+			if(empty($disk)) {
+				$msg = new DisplayedMessage();
+				$msg->setContent('Le disque n\'existe pas ou ne vous appartient pas !')
+					->setType('warning')
+					->setDismissable(true)
+					->show($this);
+				return false;
+			}
+			
 			$diskName = $disk->getNom();
 			$disk->occupation = DirectoryUtils::formatBytes($disk->getOccupation() / 100 * $disk->getQuota());
 			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
@@ -44,7 +55,7 @@ class Scan extends BaseController {
 				$disk->style = 'info';
 			}
 
-			$disk->_services = DAO::getManyToMany($disk, "services");
+			$disk->_services = DAO::getManyToMany($disk, 'services');
 			$tarif = ModelUtils::getDisqueTarif($disk);
 
 
@@ -59,7 +70,12 @@ class Scan extends BaseController {
 			echo Jquery::compile();
 		}
 		else {
-			echo "<div id='content'><h4>Veuillez vous connecter</h4></div>";
+			$msg = new DisplayedMessage();
+			$msg->setContent('Vous devez vous connecter pour avoir accès à cette ressource')
+					->setType('danger')
+					->setDismissable(false)
+					->show($this);
+			echo Auth::getInfoUser();
 		}
 	}
 

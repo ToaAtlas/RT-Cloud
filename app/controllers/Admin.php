@@ -2,7 +2,25 @@
 use micro\orm\DAO;
 class Admin extends \BaseController {
 
+	private function isAdmin() {
+		if(Auth::isAuth()) {
+			if(Auth::isAdmin()) {
+				return true;
+			}
+		}
+		$msg = new DisplayedMessage();
+		$msg->setContent('Accès à une ressource non autorisée')
+				->setType('danger')
+				->setDismissable(false)
+				->show($this);
+		return false;
+	}
+
 	public function index() {
+		if(!$this->isAdmin()) {
+			return false;
+		}
+
 		$count = (object)[];
 		$count->all = (object)[];
 		$count->today = (object)[];
@@ -20,6 +38,10 @@ class Admin extends \BaseController {
 	}
 
 	public function user() {
+		if(!$this->isAdmin()) {
+			return false;
+		}
+
 		$users = DAO::getAll('utilisateur');
 		foreach($users as $user) {
 			$user->countDisk = DAO::count('disque', 'idUtilisateur = '. $user->getId());
@@ -37,6 +59,10 @@ class Admin extends \BaseController {
 	}
 
 	public function disques() {
+		if(!$this->isAdmin()) {
+			return false;
+		}
+
 		$users = DAO::getAll('utilisateur');
 
 		$i = 0;
