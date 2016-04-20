@@ -32,7 +32,7 @@ class Scan extends BaseController {
 					->show($this);
 				return false;
 			}
-			
+
 			$diskName = $disk->getNom();
 			$disk->occupation = DirectoryUtils::formatBytes($disk->getOccupation() / 100 * $disk->getQuota());
 			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
