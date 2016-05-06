@@ -7,9 +7,10 @@ use micro\orm\DAO;
 class MyDisques extends Controller{
 	public function initialize(){
 		if(!RequestUtils::isAjax()){
-			$this->loadView('main/vHeader.html',array('infoUser' => Auth::getInfoUser()));
+			$this->loadView('main/vHeader.html', array('infoUser' => Auth::getInfoUser()));
 		}
 	}
+
 	public function index() {
 		echo Jquery::compile();
 		if (Auth::isAuth()){ //verifie user connecté
@@ -46,6 +47,10 @@ class MyDisques extends Controller{
 				->show($this);
 			echo Auth::getInfoUser();
 		}
+	}
+
+	public function rename() {
+		var_dump($_POST);
 	}
 
 	public function finalize(){

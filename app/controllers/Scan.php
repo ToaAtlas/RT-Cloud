@@ -17,13 +17,20 @@ class Scan extends BaseController {
 	/**
 	 * Affiche un disque
 	 * @param int $idDisque
+	 * @param bool $rename
 	 * @return bool
+	 * @throws Exception
 	 */
-	public function show($idDisque) {
+	public function show($idDisque, $rename = false) {
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser();
-
 			$disk = DAO::getOne('disque', 'id ='. $idDisque .'&& idUtilisateur = '. $user->getId());
+
+			if($rename && $rename == 'rename') {
+				$this->loadView('scan/rename.html', ['disk' => $disk, 'user' => $user]);
+				return false;
+			}
+
 			if(empty($disk)) {
 				$msg = new DisplayedMessage();
 				$msg->setContent('Le disque n\'existe pas ou ne vous appartient pas !')

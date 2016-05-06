@@ -17,9 +17,8 @@ class Admin extends \BaseController {
 	}
 
 	public function index() {
-		if(!$this->isAdmin()) {
+		if(!$this->isAdmin())
 			return false;
-		}
 
 		$count = (object)[];
 		$count->all = (object)[];
@@ -38,9 +37,8 @@ class Admin extends \BaseController {
 	}
 
 	public function user() {
-		if(!$this->isAdmin()) {
+		if(!$this->isAdmin())
 			return false;
-		}
 
 		$users = DAO::getAll('utilisateur');
 		foreach($users as $user) {
@@ -58,12 +56,11 @@ class Admin extends \BaseController {
 		$this->loadView('Admin/user.html', ['users' => $users]);
 	}
 
-	public function disques() {
-		if(!$this->isAdmin()) {
+	public function disques($idUtilisateur = false) {
+		if(!$this->isAdmin())
 			return false;
-		}
 
-		$users = DAO::getAll('utilisateur');
+		$users = ($idUtilisateur) ? [DAO::getOne('utilisateur', 'id = '. $idUtilisateur)] : DAO::getAll('utilisateur');
 
 		$i = 0;
 		foreach($users as $user) {
