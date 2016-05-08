@@ -365,11 +365,13 @@ class DAO {
 			}
 		}
 	}
+
 	/**
 	 * Met à jour $instance dans la base de données.
 	 * Attention de ne pas modifier la clé primaire
 	 * @param Classe $instance instance à modifier
-	 * @param $updateMany Ajoute ou met à jour les membres ManyToMany
+	 * @param bool|Ajoute $updateMany Ajoute ou met à jour les membres ManyToMany
+	 * @return
 	 */
 	public static function update($instance,$updateMany=false){
 		$tableName=OrmUtils::getTableName(get_class($instance));

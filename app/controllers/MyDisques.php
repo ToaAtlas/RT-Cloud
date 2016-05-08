@@ -50,7 +50,29 @@ class MyDisques extends Controller{
 	}
 
 	public function rename() {
-		var_dump($_POST);
+		$valid_input = ['diskId', 'userId', 'name'];
+		if(!empty($_POST)) {
+			foreach($_POST as $input => $v) {
+				if(!in_array($input, $valid_input)) {
+					//TODO Error
+					return false;
+				}
+			}
+
+			$user = Auth::getUser();
+			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId'] .'&& idUtilisateur = '. $_POST['userId']);
+			$oldname = $disk->getNom();
+			$disk->setNom($_POST['name']);
+
+			$req = rename('files/srv-'. $user->getLogin() . '/' . $oldname, 'files/srv-'. $user->getLogin() . '/' . $_POST['name']);//TODO Récupérer config
+
+			if(DAO::update($disk) && $req) {
+				header('Location: /RT-Cloud/Scan/show/'. $_POST['diskId']);
+				return false;
+			}
+			else
+				echo '<div class="alert alert-danger">Une erreur est survenue, veuillez rééssayer ultérieurement</div>';
+		}
 	}
 
 	public function finalize(){

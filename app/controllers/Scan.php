@@ -21,13 +21,26 @@ class Scan extends BaseController {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function show($idDisque, $rename = false) {
+	public function show($idDisque, $option = false) {
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser();
 			$disk = DAO::getOne('disque', 'id ='. $idDisque .'&& idUtilisateur = '. $user->getId());
 
-			if($rename && $rename == 'rename') {
-				$this->loadView('scan/rename.html', ['disk' => $disk, 'user' => $user]);
+			if($option) {
+				switch($option) {
+					case 'rename':
+						$this->loadView('scan/rename.html', ['disk' => $disk, 'user' => $user]);
+						return false;
+						break;
+					case 'changeTarif':
+						$this->loadView('scan/changeTarif.html', []);
+						return false;
+						break;
+					default:
+						echo '<div class="alert alert-danger">Paramètre inconnu</div>';
+						return false;
+						break;
+				}
 				return false;
 			}
 
