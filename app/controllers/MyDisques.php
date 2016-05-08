@@ -64,7 +64,8 @@ class MyDisques extends Controller{
 			$oldname = $disk->getNom();
 			$disk->setNom($_POST['name']);
 
-			$req = rename('files/srv-'. $user->getLogin() . '/' . $oldname, 'files/srv-'. $user->getLogin() . '/' . $_POST['name']);//TODO Récupérer config
+			$path = $GLOBALS['config']['cloud']['root'] . $GLOBALS['config']['cloud']['prefix'] . $user->getLogin() . '/';
+			$req = rename($path . $oldname, $path . $_POST['name']);
 
 			if(DAO::update($disk) && $req) {
 				header('Location: /RT-Cloud/Scan/show/'. $_POST['diskId']);

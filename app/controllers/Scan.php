@@ -17,9 +17,10 @@ class Scan extends BaseController {
 	/**
 	 * Affiche un disque
 	 * @param int $idDisque
-	 * @param bool $rename
+	 * @param bool|string $option
 	 * @return bool
 	 * @throws Exception
+	 * @internal param bool $rename
 	 */
 	public function show($idDisque, $option = false) {
 		if (Auth::isAuth()) { //verifie user connecté
@@ -33,7 +34,9 @@ class Scan extends BaseController {
 						return false;
 						break;
 					case 'changeTarif':
-						$this->loadView('scan/changeTarif.html', []);
+						$tarifs = DAO::getAll('tarif');
+						$selected = $disk->getTarif()->getId();
+						$this->loadView('scan/changeTarif.html', ['disk' => $disk, 'user' => $user, 'tarifs' => $tarifs, 'selected' => $selected]);
 						return false;
 						break;
 					default:
@@ -96,6 +99,34 @@ class Scan extends BaseController {
 					->setDismissable(false)
 					->show($this);
 			echo Auth::getInfoUser();
+		}
+	}
+
+	public function changeTarif() {
+		$valid_input = ['diskId', 'userId', 'tarif'];
+		if(!empty($_POST)) {
+			foreach ($_POST as $input => $v) {
+				if (!in_array($input, $valid_input)) {
+					//TODO Error
+					return false;
+				}
+			}
+
+			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId']);
+			$diskTarif = DAO::getOne('disquetarif', 'idDisque = '. $_POST['diskId']);
+			echo '<pre>';
+			var_dump($disk->getOccupation() / 100 * $diskTarif->getTarif()->getQuota());
+			ModelUtils::sizeConverter();
+			$tarif = DAO::getOne('tarif', 'id = '. $_POST['tarif']);
+
+			$diskTarif->setTarif($tarif);
+			DAO::update($diskTarif);
+
+			if (DAO::update($diskTarif)) {
+				header('Location: /RT-Cloud/Scan/show/' . $_POST['diskId']);
+				return false;
+			} else
+				echo '<div class="alert alert-danger">Une erreur est survenue, veuillez rééssayer ultérieurement</div>';
 		}
 	}
 
