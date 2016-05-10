@@ -60,7 +60,7 @@ class Scan extends BaseController {
 			$diskName = $disk->getNom();
 			$occupation = $disk->getOccupation();
 			$disk->occupation = DirectoryUtils::formatBytes($occupation / 100 * $disk->getQuota());
-//			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
+			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
 
 			if($occupation <= 100 && $occupation > 80) {
 				$disk->status = 'Proche saturation';
