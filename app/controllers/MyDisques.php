@@ -49,6 +49,39 @@ class MyDisques extends Controller{
 		}
 	}
 
+	public function update() {
+		if(isset($_POST) && !empty($_POST)) {
+			$error = false;
+
+			if(empty($_POST['name'])) {
+				echo '<div class="alert alert-danger">Le nom ne doit pas être vide</div>';
+				$error = true;
+			}
+
+			if(!$error) {
+				$user = Auth::getUser();
+				$name = htmlspecialchars($_POST['name']);
+				$createdAt = date('Y-m-d H:m:s');
+
+				$disk = new Disque();
+				$disk->setUtilisateur($user);
+				$disk->setNom($name);
+				$disk->setCreatedAt($createdAt);
+
+				if(DAO::insert($disk, true)) {
+					$cloud = $GLOBALS['config']['cloud'];
+					$path = $cloud['root'] . $cloud['prefix'] . $user->getLogin() . '/' . $name;
+					mkdir($path);
+
+					header('Location: /RT-Cloud/Scan/show/'. DAO::$db->lastInserId());
+					return false;
+				}
+			}
+		}
+
+		$this->loadView('MyDisques/create.html');
+	}
+
 	public function rename() {
 		$valid_input = ['diskId', 'userId', 'name'];
 		if(!empty($_POST)) {

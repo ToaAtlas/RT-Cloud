@@ -294,7 +294,8 @@ class DAO {
 	/**
 	 * Insère $instance dans la base de données
 	 * @param Classe $instance instance à insérer
-	 * @param $insertMany si vrai, sauvegarde des instances reliées à $instance par un ManyToMany
+	 * @param bool|si $insertMany si vrai, sauvegarde des instances reliées à $instance par un ManyToMany
+	 * @return
 	 */
 	public static function insert($instance,$insertMany=false){
 		$tableName=OrmUtils::getTableName(get_class($instance));

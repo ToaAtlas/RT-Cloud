@@ -56,10 +56,11 @@ class Scan extends BaseController {
 				return false;
 			}
 
+
 			$diskName = $disk->getNom();
-			$disk->occupation = DirectoryUtils::formatBytes($disk->getOccupation() / 100 * $disk->getQuota());
-			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
 			$occupation = $disk->getOccupation();
+			$disk->occupation = DirectoryUtils::formatBytes($occupation / 100 * $disk->getQuota());
+//			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
 
 			if($occupation <= 100 && $occupation > 80) {
 				$disk->status = 'Proche saturation';
@@ -107,22 +108,32 @@ class Scan extends BaseController {
 		if(!empty($_POST)) {
 			foreach ($_POST as $input => $v) {
 				if (!in_array($input, $valid_input)) {
-					//TODO Error
+					echo '<div class="alert alert-danger">Une erreur est survenue, veuillez réessayer ultérieurement</div>';
+					echo '<a href="MyDisques/index" class="btn btn-primary btn-block">Revenir aux disques</a>';
 					return false;
 				}
 			}
 
 			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId']);
-			$diskTarif = DAO::getOne('disquetarif', 'idDisque = '. $_POST['diskId']);
-			echo '<pre>';
-			var_dump($disk->getOccupation() / 100 * $diskTarif->getTarif()->getQuota());
-			ModelUtils::sizeConverter();
+//			$diskTarif = DAO::getOne('disquetarif', 'idDisque = '. $_POST['diskId']);
+			$diskTarif = new DisqueTarif();
+			$diskTarif->setDisque($disk);
+
 			$tarif = DAO::getOne('tarif', 'id = '. $_POST['tarif']);
-
 			$diskTarif->setTarif($tarif);
-			DAO::update($diskTarif);
+			$diskTarif->setStartDate(date('Y-m-d H:m:s'));
 
-			if (DAO::update($diskTarif)) {
+			$actual_size = $disk->getOccupation() / 100 * $disk->getTarif()->getQuota() * ModelUtils::sizeConverter($disk->getTarif()->getUnite());
+			$new_size = $tarif->getQuota() * ModelUtils::sizeConverter($tarif->getUnite());
+			if($actual_size > $new_size) {
+				echo '<div class="alert alert-danger">Vous ne pouvez réduire l\'offre actuelle puisque votre quota est supérieur au nouveau</div>';
+				echo '<a href="Scan/show/'. $_POST['diskId'] .'" class="btn btn-primary btn-block">Revenir au disque</a>';
+				return false;
+			}
+			else
+				$disk->addTarif($diskTarif);
+
+			if (DAO::update($disk, true)) {
 				header('Location: /RT-Cloud/Scan/show/' . $_POST['diskId']);
 				return false;
 			} else

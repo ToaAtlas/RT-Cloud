@@ -10,7 +10,7 @@ use micro\utils\RequestUtils;
 abstract class BaseController extends Controller {
 	public function initialize(){
 		if(!RequestUtils::isAjax()){
-			$this->loadView("main/vHeader.html",array("infoUser"=>Auth::getInfoUser()));
+			$this->loadView("main/vHeader.html", array("infoUser"=>Auth::getInfoUser(), 'fil' => ''));
 		}
 	}
 
